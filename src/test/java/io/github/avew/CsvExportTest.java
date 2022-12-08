@@ -48,7 +48,7 @@ public class CsvExportTest {
         for (String message : csvWriter.getMessages()) {
             log.debug(message);
         }
-        log.debug("PERCENTAGE {}", csvWriter.getPercentage());
+        log.debug("PERCENTAGE {}", csvWriter.getLastPercentage());
     }
 
 

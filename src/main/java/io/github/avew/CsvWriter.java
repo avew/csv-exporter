@@ -13,10 +13,10 @@ public class CsvWriter {
 
     private String process = "CSV Write";
     private char SEPARATOR = ';';
-    private String[] HEADER;
-    private List<String> values;
-    private List<Integer> percentages = new ArrayList<>();
-    private List<String> messages = new ArrayList<>();
+    private final String[] HEADER;
+    private final List<String> values;
+    private final List<Integer> percentages = new ArrayList<>();
+    private final List<String> messages = new ArrayList<>();
 
     public CsvWriter(String process, char SEPARATOR, String[] HEADER, List<String> values) {
         this.process = process;
@@ -34,15 +34,7 @@ public class CsvWriter {
             int no = index.getAndIncrement();
             int percentage = Math.round(100 * no / total);
             percentages.add(percentage);
-            String message = new StringBuilder()
-                    .append("PROCESS OF ")
-                    .append(process)
-                    .append(" INDEX ")
-                    .append(no)
-                    .append(" OF ")
-                    .append(total)
-                    .append(" PERCENTAGE ")
-                    .append(percentage).toString();
+            String message = new StringBuilder().append("PROCESS OF ").append(process).append(" INDEX ").append(no).append(" OF ").append(total).append(" PERCENTAGE ").append(percentage).toString();
             messages.add(message);
             CsvExport.writeLine(writer, Collections.singletonList(value), SEPARATOR);
         }
@@ -55,10 +47,13 @@ public class CsvWriter {
         return messages;
     }
 
-    public Integer getPercentage() {
-        if (percentages.isEmpty())
-            return 0;
+    public Integer getLastPercentage() {
+        if (percentages.isEmpty()) return 0;
         return percentages.get(percentages.size() - 1);
+    }
+
+    public List<Integer> getPercentages() {
+        return percentages;
     }
 
     public List<String> getValues() {
