@@ -5,7 +5,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -22,7 +21,7 @@ public class CsvExportTest {
 
     @Ignore
     @Test
-    public void testWrite() throws IOException {
+    public void testWrite() {
         DirUtil dirUtil = new DirUtil();
         String filename = UUID.randomUUID() + ".csv";
         File file = dirUtil.createFile("D:\\TMP\\temp", filename);
@@ -41,14 +40,12 @@ public class CsvExportTest {
                 .collect(Collectors.toList());
 
         CsvWriter csvWriter = new CsvWriter("Write person to csv", SEPARATOR, HEADER, strings);
-        csvWriter.write(file);
-        for (String s : csvWriter.getValues()) {
-            log.debug("VALUE {}", s);
+        CsvWriterResult csvWriterResult = csvWriter.write(file);
+        for (CsvProgress csvProgress : csvWriter.getProgress()) {
+            log.debug(csvProgress.getMessage());
         }
-        for (String message : csvWriter.getMessages()) {
-            log.debug(message);
-        }
-        log.debug("PERCENTAGE {}", csvWriter.getLastPercentage());
+        log.debug("LAST PERCENTAGE {}", csvWriter.getLastPercentage());
+        log.debug("RESULT {}", csvWriterResult.toString());
     }
 
 
