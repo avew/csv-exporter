@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class CsvWriter {
 
@@ -28,20 +29,22 @@ public class CsvWriter {
         FileWriter writer = new FileWriter(out);
         CsvExport.writeLine(writer, Arrays.asList(HEADER), SEPARATOR);
         int total = values.size();
-        for (int i = 0; i < total; i++) {
-            int percentage = Math.round(100 * i + 1 / total);
+        AtomicInteger index = new AtomicInteger(1);
+        for (String value : values) {
+            int no = index.getAndIncrement();
+            int percentage = Math.round(100 * no / total);
             percentages.add(percentage);
             String message = new StringBuilder()
                     .append("PROCESS OF ")
                     .append(process)
                     .append(" INDEX ")
-                    .append(i + 1)
+                    .append(no)
                     .append(" OF ")
                     .append(total)
                     .append(" PERCENTAGE ")
                     .append(percentage).toString();
             messages.add(message);
-            CsvExport.writeLine(writer, Collections.singletonList(values.get(i)), SEPARATOR);
+            CsvExport.writeLine(writer, Collections.singletonList(value), SEPARATOR);
         }
         writer.flush();
         writer.close();
@@ -58,4 +61,7 @@ public class CsvWriter {
         return percentages.get(percentages.size() - 1);
     }
 
+    public List<String> getValues() {
+        return values;
+    }
 }

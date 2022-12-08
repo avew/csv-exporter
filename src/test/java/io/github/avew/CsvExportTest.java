@@ -29,6 +29,8 @@ public class CsvExportTest {
 
         persons.add(Person.builder().firstName("John").lastName("Doe").build());
         persons.add(Person.builder().firstName("Elona").lastName("Holmes").build());
+        persons.add(Person.builder().firstName("Dadang").lastName("Supratman").build());
+        persons.add(Person.builder().firstName("Hotman").lastName("Situmpul").build());
 
         AtomicInteger index = new AtomicInteger(1);
         List<String> strings = persons.stream()
@@ -40,6 +42,9 @@ public class CsvExportTest {
 
         CsvWriter csvWriter = new CsvWriter("Write person to csv", SEPARATOR, HEADER, strings);
         csvWriter.write(file);
+        for (String s : csvWriter.getValues()) {
+            log.debug("VALUE {}", s);
+        }
         for (String message : csvWriter.getMessages()) {
             log.debug(message);
         }
