@@ -16,6 +16,7 @@ import java.util.List;
 public class CsvProgress {
 
     private String message;
+    private int counter;
     private int percentage;
     @Builder.Default
     private List<String> values = new ArrayList<>();

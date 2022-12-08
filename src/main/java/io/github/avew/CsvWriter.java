@@ -28,20 +28,22 @@ public class CsvWriter {
         CsvWriterResult build = CsvWriterResult.builder().build();
         try {
             FileWriter writer = new FileWriter(out);
+            /* header */
             CsvExport.writeLine(writer, Arrays.asList(HEADER), SEPARATOR);
             int total = values.size();
             AtomicInteger index = new AtomicInteger(1);
             for (String value : values) {
                 int no = index.getAndIncrement();
                 int percentage = Math.round(100 * no / total);
-                String message = new StringBuilder().append("PROCESS OF ").append(process).append(" INDEX ").append(no).append(" OF ").append(total).append(" PERCENTAGE ").append(percentage).toString();
+                String message = new StringBuilder().append("PROCESS OF ").append(process).append(" COUNTER ").append(no).append(" OF ").append(total).append(" PERCENTAGE ").append(percentage).toString();
                 progress.add(CsvProgress.builder()
+                        .counter(no)
                         .message(message)
                         .percentage(percentage)
                         .values(Collections.singletonList(value))
                         .build());
                 percentages.add(percentage);
-
+                /* body */
                 CsvExport.writeLine(writer, Collections.singletonList(value), SEPARATOR);
             }
             writer.flush();
